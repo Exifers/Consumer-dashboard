@@ -13,10 +13,41 @@
     </div>
 </div>
 
- -----> YOUR CODE HERE <-----
+<!-- Annual costs 2017 -->
+<div class="banner">Dépenses en 2017</div>
+{% if annual_costs.0 != None %}
+  <div class="field">{{ annual_costs.0 }} €</div>
+{% endif %}
+
+<!-- Consomation graph -->
+<div id="conso_graph"></div>
+
+<!-- Annual costs 2016 -->
+{% if annual_costs.1 != None %}
+  <div class="banner">Dépenses en 2016</div>
+  <div class="field">{{ annual_costs.1 }} €</div>
+{% endif %}
+
+<div class="banner">Analyse des résultats</div>
+<div class="field">
+  <!-- Heating type -->
+  <div style="display: inline-block; text-align:center;">
+    Chauffage électrique: {{ is_elec_heating | yesno:"Oui,Non,N.C." }}
+  </div>
+  <!-- Padding -->
+  <div style="display: inline-block; width:150px;"></div>
+  <!-- Eventual dysfunction -->
+  {% autoescape off %}
+  <div style="display: inline-block; text-align:center;">
+    Dysfonctionnement: {{ dysfunction_detected | yesno:"<span style=\"color:red;\">Oui</span>,Non,N.C." }}
+  {% endautoescape %}
+  </div>
+</div>
 
 {% endblock %}
 
 {% block script %}
+    <script>from_django = [{{ conso_euro }}, {{ conso_watt }}]</script>
     <script src="{% static 'dashboard/js/results.js' %}"></script>
+    <script src="{% static 'dashboard/js/canvasjs.min.js' %}"></script>
 {% endblock %}
